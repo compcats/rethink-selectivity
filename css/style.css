@@ -1,0 +1,631 @@
+/* ============================================================
+   rethink-selectivity — style.css
+   Color palette:
+     Brain (red):  #D85A30  light: #FAECE7
+     ANN (blue):   #378ADD  light: #E6F1FB
+     Neutral gray: #888780
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --brain-red:        #D85A30;
+  --brain-red-light:  #F5C4B3;
+  --brain-red-bg:     #FAECE7;
+  --ann-blue:         #378ADD;
+  --ann-blue-light:   #B5D4F4;
+  --ann-blue-bg:      #E6F1FB;
+  --neutral:          #888780;
+  --neutral-light:    #D3D1C7;
+  --border:           rgba(0,0,0,0.1);
+  --border-strong:    rgba(0,0,0,0.18);
+  --text-primary:     #1a1a18;
+  --text-secondary:   #5a5a55;
+  --text-tertiary:    #8a8a84;
+  --bg-page:          #f8f7f4;
+  --bg-surface:       #ffffff;
+  --bg-subtle:        #f1f0ec;
+  --radius-sm:        6px;
+  --radius-md:        10px;
+  --radius-lg:        14px;
+  --font-sans:        -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono:        "SF Mono", "Fira Code", "Consolas", monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  background: var(--bg-page);
+}
+
+/* ---- Typography ---- */
+h1 { font-size: 18px; font-weight: 500; line-height: 1.4; }
+h2 { font-size: 17px; font-weight: 500; line-height: 1.4; }
+h3 { font-size: 15px; font-weight: 500; }
+p  { color: var(--text-secondary); line-height: 1.7; }
+a  { color: var(--ann-blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+  background: var(--bg-surface);
+  border-bottom: 0.5px solid var(--border-strong);
+  padding: 1.5rem 0 1.25rem;
+  /* position: sticky; -> This makes the top bar always be at the top */
+  position: relative;
+  top: 0;
+  z-index: 200;
+}
+
+.header-inner {
+  max-width: 1100px; /* 980 px */
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.lab-tag {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.paper-title {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.45;
+  max-width: 700px;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.author-line {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 0.6rem;
+}
+.author-line a {
+  color: inherit;
+  text-decoration: none;
+}
+.author-line a:hover {
+  text-decoration: underline;
+}
+
+.affiliation-line {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 0.6rem;
+}
+.affiliation-line a {
+  color: inherit;
+  text-decoration: none;
+}
+.affiliation-line a:hover {
+  text-decoration: underline;
+}
+
+.header-links {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  padding: 4px 11px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border-strong);
+  color: var(--text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.15s;
+}
+.pill:hover { background: var(--bg-subtle); text-decoration: none; }
+.pill svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.tldr-bar {
+  background: var(--bg-subtle);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--brain-red);
+  padding: 0.55rem 0.9rem;
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 720px;
+}
+.tldr-bar strong { color: var(--text-primary); }
+
+/* ============================================================
+   LAYOUT — ToC + Main
+   ============================================================ */
+/* .layout {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  gap: 2.5rem;
+} */
+.layout {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+/* ---- Table of contents ---- */
+.toc {
+  width: 170px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 24px;
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-top: 2rem;
+}
+
+.toc-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.toc nav a {
+  display: block;
+  font-size: 12px;
+  padding: 4px 0 4px 10px;
+  border-left: 2px solid var(--neutral-light);
+  color: var(--text-tertiary);
+  text-decoration: none;
+  line-height: 1.45;
+  margin-bottom: 2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.toc nav a:hover,
+.toc nav a.active {
+  border-left-color: var(--brain-red);
+  color: var(--text-primary);
+}
+
+/* ---- Main content ---- */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem 0 5rem;
+}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+.section {
+  margin-bottom: 3.5rem;
+  padding-top: 0.5rem;
+  scroll-margin-top: 120px;
+}
+
+.section-eyebrow {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.section-title {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.section-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+/* ============================================================
+   FIGURE PLACEHOLDER
+   ============================================================ */
+.fig-placeholder {
+  background: var(--bg-subtle);
+  border: 0.5px dashed var(--neutral-light);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+}
+
+.fig-img {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  border: 0.5px solid var(--border);
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.fig-caption {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: -1rem;
+  margin-bottom: 1.25rem;
+  max-width: 100%;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ============================================================
+   STATS BAR
+   ============================================================ */
+.stats-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1.25rem 0;
+}
+
+.stat-pill {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.stat-num {
+  font-weight: 500;
+  color: var(--brain-red);
+}
+
+/* ============================================================
+   INTERACTIVE BOX
+   ============================================================ */
+.interactive-box {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.interactive-box + .interactive-box {
+  margin-top: 0.75rem;
+}
+
+.interactive-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.interactive-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+.controls {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 0.9rem;
+}
+
+.ctrl-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.ctrl-group label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.ctrl-group select,
+.ctrl-group input[type="range"] {
+  font-size: 13px;
+  font-family: var(--font-sans);
+}
+
+.ctrl-group select {
+  padding: 4px 8px;
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.plot-info {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  min-height: 1.4em;
+}
+
+/* ============================================================
+   CANVAS PLOTS
+   ============================================================ */
+.plot-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.plot-wrap canvas {
+  display: block;
+  width: 100% !important;
+}
+
+.plot-tooltip {
+  position: absolute;
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 7px 10px;
+  font-size: 12px;
+  pointer-events: none;
+  display: none;
+  z-index: 50;
+  max-width: 200px;
+  line-height: 1.55;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   LEGEND
+   ============================================================ */
+.legend {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   RDM
+   ============================================================ */
+.rdm-scroll {
+  overflow-x: auto;
+  margin-top: 0.5rem;
+}
+
+.rdm-hover-info {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  min-height: 1.3em;
+}
+
+/* ============================================================
+   FINDING BOXES
+   ============================================================ */
+.finding-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.finding-box {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem 1rem;
+}
+
+.finding-box .fb-roi {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--brain-red);
+  margin-bottom: 0.3rem;
+}
+
+.finding-box .fb-contrast {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.finding-box .fb-result {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   CONCLUSION CARDS
+   ============================================================ */
+.open-questions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.oq-card {
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.1rem;
+}
+
+.oq-card.brain { border-left: 3px solid var(--brain-red); }
+.oq-card.ann   { border-left: 3px solid var(--ann-blue); }
+
+.oq-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-bottom: 0.35rem;
+}
+
+.oq-text {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   CITATION
+   ============================================================ */
+.citation-block {
+  background: var(--bg-subtle);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem 1.25rem;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.bib-toggle {
+  display: inline-block;
+  font-size: 12px;
+  color: var(--ann-blue);
+  cursor: pointer;
+  margin-top: 0.6rem;
+  user-select: none;
+}
+
+.bib-block {
+  display: none;
+  margin-top: 0.6rem;
+  background: var(--bg-surface);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  border-top: 0.5px solid var(--border);
+  padding: 1.5rem 0;
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 700px) {
+  .toc { display: none; }
+  .layout { padding: 0 1rem; gap: 0; }
+  .header-inner { padding: 0 1rem; }
+  .paper-title { font-size: 15px; }
+  .site-header { padding: 1rem 0 1rem; }
+  .controls { gap: 0.6rem; }
+  .finding-boxes { grid-template-columns: 1fr; }
+  .open-questions { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+
+.interactive-box.expanded {
+  position: fixed;
+  top: 2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 300;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+}
+
+.expand-btn {
+  float: right;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 2px 6px;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  user-select: none;
+  background: transparent;
+}
+.expand-btn:hover { color: var(--text-primary); background: var(--bg-subtle); }
+
+.expand-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 299;
+}
+.expand-overlay.active { display: block; }
