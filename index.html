@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>It's time to rethink category selectivity</title>
+  <title>Category selectivity in ANNs ≠ Human Brain</title>
   <meta name="description" content="Category selectivity observed in the human brain is distinct from category selectivity in artificial neural networks." />
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -63,18 +63,33 @@
 
   <!-- Table of contents -->
   <aside class="toc" aria-label="Page sections">
-    <div class="toc-label">Contents</div>
-    <nav>
+    <!-- <div class="toc-label">Contents</div> -->
+    <!-- <nav>
       <a href="/">Home</a>
-      <a href="#challenge">The challenge</a>
+      <a href="#challenge">Central challenge</a>
       <a href="#finding1">Finding 1 · Emergence of reliable category-selective units in ANNs </a>
       <a href="#finding23">Findings 2 &amp; 3 · Divergence of category selectivity in ANNs from human brains</a>
-      <a href="#finding4">Finding 4 · ANN category-selective units do not contribute to brain response predictivity</a>
-      <a href="#finding5">Finding 5 · Stimulus-level divergences are systematic and  human-interpretable</a>
+      <a href="#finding4">Finding 4 · ANN category-selective units do not drive the brain response predictivity</a>
+      <a href="#finding5">Finding 5 · Stimulus-level differences are systematic and  human-interpretable</a>
       <a href="#conclusion">Conclusion</a>
+      <a href="#citation">Citation</a>
+    </nav> -->
+    <nav>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);padding:6px 0 2px 0px;font-weight:500">Introduction</div>
+      <a href="/">Home</a>
+      <a href="#challenge">Central challenge</a>
+      <a href="#research-questions">Research questions</a>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);padding:6px 0 2px 0px;font-weight:500">Key findings</div>
+      <a href="#finding1" style="padding-left:18px">1 · Category-selective units emerge reliably in trained, not untrained, ANNs</a>
+      <a href="#finding23" style="padding-left:18px">2 & 3 · Category selectivity in ANNs is distinct from human brains</a>
+      <a href="#finding4" style="padding-left:18px">4 · ANN category-selective units do not drive the brain response predictivity</a>
+      <a href="#finding5" style="padding-left:18px">5 · Stimulus-level differences are systematic and  human-interpretable</a>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);padding:6px 0 2px 0px;font-weight:500">Conclusion</div>
+      <a href="#conclusion">Broader implications</a>
       <a href="#citation">Citation</a>
     </nav>
   </aside>
+  
 
   <!-- Main content -->
   <main class="main">
@@ -83,8 +98,8 @@
          § 0 CENTRAL CHALLENGE
          =================================================== -->
     <section class="section" id="challenge">
-      <div class="section-eyebrow">Central challenge</div>
-      <h2 class="section-title">The minimal definition of category selectivity is underconstrained</h2>
+      <!-- <div class="section-eyebrow">Central challenge</div> -->
+      <h2 class="section-title"><b>Central challenge:</b> The minimal definition of category selectivity is underconstrained</h2>
       <p class="section-text">
         A voxel or unit is deemed "face-selective" if it responds more to faces than to other
         categories — but infinitely many response patterns satisfy this minimal criterion.
@@ -92,48 +107,58 @@
         the form of ANN selectivity matches what is observed in the human brain.
       </p>
 
+      <div class="reveal-tabs">
+        <button class="reveal-btn" onclick="showTab(this, 'cc-fig')">📄 Schematic: Figure 1</button>
+        <span style="align-self:center;color:var(--neutral-light);font-size:16px">·</span>
+        <button class="reveal-btn active" onclick="showTab(this, 'cc-demo')">🔬 Interact: Explore the space of face-selective response profiles</button>
+      </div>
+
       <!-- Figure 1 -->
-      <img src="figures/Figure1.png" alt="Figure 1: Conceptual framework and experimental design" class="fig-img" style="height:auto" />
-      <p class="fig-caption">
-        <strong>Figure 1.</strong> Conceptual framework. (a) The response profile space: every point satisfies
-        the minimal selectivity criterion (preferred &gt; other), but response profiles differ widely.
-        (b) The study compares category-selective response profiles in human category-selective regions
-        and ANN category-selective units.
-      </p>
+      <div id="cc-fig" class="reveal-panel" style="display:none">
+        <img src="figures/Figure1.png" alt="Figure 1: Conceptual framework and experimental design" class="fig-img" style="height:auto" />
+        <p class="fig-caption">
+          <strong>Figure 1.</strong> Conceptual framework. (a) The response profile space: every point satisfies
+          the minimal selectivity criterion (preferred &gt; other), but response profiles differ widely.
+          (b) The study compares category-selective response profiles in human category-selective regions
+          and ANN category-selective units.
+        </p>
+      </div>
 
       <!-- Interactive: schematic blob -->
-      <div class="interactive-box">
-        <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
-        <div class="interactive-label">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2"/></svg>
-          Response profile explorer &nbsp;·&nbsp; schematic
-        </div>
-        <p class="interactive-hint">
-          Each point is a face-selective response profile (faces &gt; other categories).
-          Click any point to reveal its full response pattern across categories.
-        </p>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start">
-          <div style="flex:1;min-width:180px;position:relative">
-            <div class="plot-wrap" style="height:200px">
-              <canvas id="blob-canvas"></canvas>
+      <div id="cc-demo" class="reveal-panel">
+        <div class="interactive-box">
+          <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
+          <div class="interactive-label">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2"/></svg>
+            Response profile explorer &nbsp;·&nbsp; schematic
+          </div>
+          <p class="interactive-hint">
+            Each point is a face-selective response profile (faces &gt; other categories).
+            Click any point to reveal its full response pattern across categories.
+          </p>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start">
+            <div style="flex:1;min-width:180px;position:relative">
+              <div class="plot-wrap" style="height:200px">
+                <canvas id="blob-canvas"></canvas>
+              </div>
+            </div>
+            <div style="flex:1;min-width:150px">
+              <div id="profile-label" style="font-size:11px;color:var(--text-tertiary);margin-bottom:4px">← click a point</div>
+              <div class="plot-wrap" style="height:170px">
+                <canvas id="profile-canvas"></canvas>
+              </div>
             </div>
           </div>
-          <div style="flex:1;min-width:150px">
-            <div id="profile-label" style="font-size:11px;color:var(--text-tertiary);margin-bottom:4px">← click a point</div>
-            <div class="plot-wrap" style="height:170px">
-              <canvas id="profile-canvas"></canvas>
-            </div>
+          <div class="legend" style="margin-top:.6rem">
+            <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div> Human FFA</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div> ANN unit (example)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#888780"></div> Other face-selective profiles</div>
           </div>
-        </div>
-        <div class="legend" style="margin-top:.6rem">
-          <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div> Human FFA</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div> ANN unit (example)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#888780"></div> Other face-selective profiles</div>
         </div>
       </div>
 
       <!-- Research questions bar -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0">
+      <!-- <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0">
         <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:1rem 1.1rem">
           <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">Question 1: Brain consistency</div>
           <div style="font-size:12px;color:var(--text-secondary);line-height:1.55">Are category-selective response profiles stable and consistent across individuals? If human selectivity is highly idiosyncratic, comparing any model to a single canonical pattern is ill-posed.</div>
@@ -142,10 +167,22 @@
           <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">Question 2: Brain-ANN similarity</div>
           <div style="font-size:12px;color:var(--text-secondary);line-height:1.55">Even if category-selective units <em>exist</em> in ANNs, do they exhibit the same <em>form</em> of selectivity as the brain? We go beyond the localizer contrast and compare full response profiles across hundreds of natural images — for every model and every subject.</div>
         </div>
-      </div>
+      </div> -->
+      <!-- <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0">
+        <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:1rem 1.1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.6rem">Q1: Do different brains exhibit the same <em>form</em> of category selectivity?</div>
+          <button class="reveal-btn" style="font-size:11px;padding:3px 10px" onclick="this.style.display='none';this.nextElementSibling.style.display='block'">See answer ↓</button>
+          <div style="display:none;font-size:12px;color:var(--text-secondary);line-height:1.55;margin-top:.5rem">Yes! Category-selective regions are strikingly consistent — establishing a human-human ceiling for model comparison.</div>
+        </div>
+        <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:1rem 1.1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.6rem">Q2: Do ANN units exhibit the same <em>form</em> of category selectivity as the brain?</div>
+          <button class="reveal-btn" style="font-size:11px;padding:3px 10px" onclick="this.style.display='none';this.nextElementSibling.style.display='block'">See answer ↓</button>
+          <div style="display:none;font-size:12px;color:var(--text-secondary);line-height:1.55;margin-top:.5rem">No! ANN units fall well below the human-human ceiling in every model tested. We go beyond the localizer contrast and compare full response profiles across hundreds of natural images — for every model and every subject. </div>
+        </div>
+      </div> -->
 
       <!-- Stats bar -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1.5rem 0">
+      <!-- <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1.5rem 0">
         <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:1rem 1.1rem">
           <div style="font-size:2rem;font-weight:500;color:var(--brain-red);line-height:1">55</div>
           <div style="font-weight:500;font-size:13px;margin:.3rem 0 .25rem">ANN models evaluated</div>
@@ -162,80 +199,114 @@
           <div style="font-size:12px;color:var(--text-secondary);line-height:1.5">Natural images viewed by all 8 subjects, enabling stimulus-level brain-ANN comparisons across individuals and models.</div>
         </div>
       </div>
+    </section> -->
     </section>
+
+    <!-- Divider line -->
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:1rem 0">
+
+    <section class="section" id="research-questions">
+        <div class="section-eyebrow">Research questions</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:0.5rem 0">
+            <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:1rem 1.1rem">
+              <div style="font-size:14px;font-weight:500;margin-bottom:.6rem">Q1: Do different brains exhibit the same <em>form</em> of category selectivity?</div>
+              <button class="reveal-btn" style="font-size:11px;padding:3px 10px" onclick="this.style.display='none';this.nextElementSibling.style.display='block'">See answer ↓</button>
+              <div style="display:none;font-size:12px;color:var(--text-secondary);line-height:1.55;margin-top:.5rem"><b>Yes!</b> Category-selective regions are strikingly consistent — establishing a human-human ceiling for model comparison.</div>
+            </div>
+            <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:1rem 1.1rem">
+              <div style="font-size:14px;font-weight:500;margin-bottom:.6rem">Q2: Do ANN units exhibit the same <em>form</em> of category selectivity as the brain?</div>
+              <button class="reveal-btn" style="font-size:11px;padding:3px 10px" onclick="this.style.display='none';this.nextElementSibling.style.display='block'">See answer ↓</button>
+              <div style="display:none;font-size:12px;color:var(--text-secondary);line-height:1.55;margin-top:.5rem"><b>No!</b> ANN units fall well below the human-human ceiling in every model tested — regardless of the selectivity threshold, functional localizer, and category-selective fROI.</div>
+            </div>
+          </div>
+      </section>
+
+      <!-- Divider line -->
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:1rem 0">
 
     <!-- ===================================================
          § FINDING 1
          =================================================== -->
     <section class="section" id="finding1">
-      <div class="section-eyebrow">Finding 1</div>
-      <h2 class="section-title">Category-selective units emerge in trained, but not untrained, ANNs</h2>
+      <!-- <div class="section-eyebrow">Finding 1</div> -->
+      <h2 class="section-title"><b>Finding 1:</b> Category-selective units emerge only in trained, but not untrained, ANNs</h2>
       <p class="section-text">
         Using the same localizer procedure applied in human fMRI, we identified category-selective 
-        units across all 55 ANN models. All 35 pretrained models show robust face-, body-, and 
+        units across 55 ANN models (35 trained + 20 untrained). All pretrained models show robust face-, body-, and 
         scene-selective units that generalize to an independent stimulus set, but randomly initialized 
         models showed no reliable selectivity. Training is necessary for category selectivity 
         to emerge.
       </p>
 
-      <!-- Figure 2 -->
-      <img src="figures/Figure2.png" alt="Figure 2: Category-selective units in trained vs. untrained ANNs" class="fig-img" style="height:auto" />
-      <p class="fig-caption">
-        <strong>Figure 2.</strong> (a) Localization pipeline. (b) Trained models (ResNet-50, ViT-B/16)
-        show reliable face-, body-, and scene-selective units. (c) An untrained AlexNet instance
-        shows no generalizable selectivity.
-      </p>
+      <div class="reveal-tabs">
+        <button class="reveal-btn" onclick="showTab(this, 'f1-fig')">📄 Evidence: Figure 2</button>
+        <span style="align-self:center;color:var(--neutral-light);font-size:16px">·</span>
+        <button class="reveal-btn" onclick="showTab(this, 'f1-demo')">🔬 Interact: Explore selectivity of an ANN model</button>
+      </div>
 
-      <!-- Interactive: unit response explorer -->
-      <div class="interactive-box">
-        <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
-        <div class="interactive-label">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="10" width="3" height="4" rx="1"/><rect x="6.5" y="6" width="3" height="8" rx="1"/><rect x="11" y="2" width="3" height="12" rx="1"/></svg>
-          Unit response explorer
-        </div>
-        <div class="controls">
-          <div class="ctrl-group">
-            <label for="f2-domain">Selectivity</label>
-            <select id="f2-domain" onchange="drawFig2()">
-              <option value="face">Face-selective</option>
-              <option value="body">Body-selective</option>
-              <option value="scene">Scene-selective</option>
-            </select>
-          </div>
-          <div class="ctrl-group">
-            <label for="f2-model">Model</label>
-            <select id="f2-model" onchange="drawFig2()">
-              <option value="resnet50">ResNet-50 ImageNet-1K</option>
-              <option value="vitb16">ViT-B/16 SigLIP2</option>
-              <option value="alexnet">AlexNet ImageNet-1K</option>
-              <option value="untrained">Untrained AlexNet (seed 5)</option>
-            </select>
-          </div>
-          <div class="ctrl-group">
-            <label for="f2-thresh">t-threshold: <strong id="f2-thresh-val">7</strong></label>
-            <input type="range" id="f2-thresh" min="3" max="11" step="2" value="7"
-                   oninput="document.getElementById('f2-thresh-val').textContent=this.value; drawFig2()" />
-          </div>
-        </div>
-        <div class="plot-info" id="f2-info">N = 729 face-selective units (0.18% of layer)</div>
-        <div class="plot-wrap" style="height:210px;position:relative">
-          <canvas id="f2-canvas"></canvas>
-          <div class="plot-tooltip" id="f2-tip"></div>
-        </div>
-        <p class="interactive-hint" style="margin-top:.5rem">
-          Hover scatter points to see the localizer image that drives each unit.
-          (In the live site, thumbnails load from <code>images/localizer/</code>.)
+      <!-- Figure 2 -->
+      <div id="f1-fig" class="reveal-panel" style="display:none">
+        <img src="figures/Figure2.png" alt="Figure 2: Category-selective units in trained vs. untrained ANNs" class="fig-img" style="height:auto" />
+        <p class="fig-caption">
+          <strong>Figure 2.</strong> (a) Localization pipeline. (b) Trained models (ResNet-50, ViT-B/16)
+          show reliable face-, body-, and scene-selective units. (c) An untrained AlexNet instance
+          shows no generalizable selectivity.
         </p>
       </div>
+
+      <!-- Interactive: unit response explorer -->
+      <div id="f1-demo" class="reveal-panel" style="display:none">
+        <div class="interactive-box">
+          <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
+          <div class="interactive-label">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="10" width="3" height="4" rx="1"/><rect x="6.5" y="6" width="3" height="8" rx="1"/><rect x="11" y="2" width="3" height="12" rx="1"/></svg>
+            Unit response explorer
+          </div>
+          <div class="controls">
+            <div class="ctrl-group">
+              <label for="f2-domain">Selectivity</label>
+              <select id="f2-domain" onchange="drawFig2()">
+                <option value="face">Face-selective</option>
+                <option value="body">Body-selective</option>
+                <option value="scene">Scene-selective</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f2-model">Model</label>
+              <select id="f2-model" onchange="drawFig2()">
+                <option value="resnet50">ResNet-50 ImageNet-1K</option>
+                <option value="vitb16">ViT-B/16 SigLIP2</option>
+                <option value="alexnet">AlexNet ImageNet-1K</option>
+                <option value="untrained">Untrained AlexNet (seed 5)</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f2-thresh">t-threshold: <strong id="f2-thresh-val">7</strong></label>
+              <input type="range" id="f2-thresh" min="3" max="11" step="2" value="7"
+                    oninput="document.getElementById('f2-thresh-val').textContent=this.value; drawFig2()" />
+            </div>
+          </div>
+          <div class="plot-info" id="f2-info">N = 729 face-selective units (0.18% of layer)</div>
+          <div class="plot-wrap" style="height:210px;position:relative">
+            <canvas id="f2-canvas"></canvas>
+            <div class="plot-tooltip" id="f2-tip"></div>
+          </div>
+          <p class="interactive-hint" style="margin-top:.5rem">
+            Hover scatter points to see the localizer image that drives each unit.
+            (In the live site, thumbnails load from <code>images/localizer/</code>.)
+          </p>
+        </div>
+    </div>
     </section>
 
     <!-- ===================================================
          § FINDINGS 2 & 3
          =================================================== -->
     <section class="section" id="finding23">
-      <div class="section-eyebrow">Findings 2 &amp; 3</div>
-      <h2 class="section-title">Human category-selective responses are strikingly consistent across individuals &nbsp;·&nbsp <br> ANN units fall well below the human-human ceiling — in every model tested
-</h2>
+      <!-- <div class="section-eyebrow">Findings 2 &amp; 3</div> -->
+      <h2 class="section-title"><b>Finding 2:</b> Human category-selective responses are strikingly consistent across individuals
+        &nbsp;·&nbsp <br> <b>Finding 3:</b> ANN units fall well below the human-human ceiling — in every model tested
+      </h2>
       <p class="section-text">
         Category-selective voxel responses in FFA, EBA, and PPA are strikingly consistent across all 8 subjects — 
         defining the human-human ceiling. Every ANN model tested falls substantially below this ceiling, 
@@ -243,76 +314,104 @@
         functional localizers, and category-selective regions.
       </p>
 
+      <div class="reveal-tabs">
+        <button class="reveal-btn" onclick="showTab(this, 'f23-fig1')">📄 Evidence: Figure 3</button>
+        <button class="reveal-btn" onclick="showTab(this, 'f23-fig2')">📄 Evidence: Figure 4</button>
+        <span style="align-self:center;color:var(--neutral-light);font-size:16px">·</span>
+        <button class="reveal-btn" onclick="showTab(this, 'f23-demo1')">🔬 Interact: Explore the gap</button>
+        <button class="reveal-btn" onclick="showTab(this, 'f23-demo2')">🔬 Interact: Comparison between all pairs</button>
+      </div>
+
       <!-- Figure 3 -->
-      <img src="figures/Figure3.png" alt="Figure 3: Brain-brain vs. brain-ANN similarity" class="fig-img" style="height:auto" />
-      <p class="fig-caption">
-        <strong>Figure 3.</strong> (a) Schematic of the comparison. (b) Noise-corrected univariate
-        and multivariate correlations: human-human pairs are highly similar; human-ANN pairs are substantially
-        lower. (c) Pairwise correlations across all humans and models. (d) MDS visualization.
-      </p>
+      <div id="f23-fig1" class="reveal-panel" style="display:none">
+        <img src="figures/Figure3.png" alt="Figure 3: Brain-brain vs. brain-ANN similarity" class="fig-img" style="height:auto" />
+        <p class="fig-caption">
+          <strong>Figure 3.</strong> ANNs fall well below the human-human ceiling. (a) Schematic of the comparison. (b) Noise-corrected univariate
+          and multivariate correlations: human-human pairs are highly similar; human-ANN pairs are substantially
+          lower. (c) Pairwise correlations across all humans and models. (d) MDS visualization.
+        </p>
+      </div>
+
+      <!-- Figure 4 -->
+      <div id="f23-fig2" class="reveal-panel" style="display:none">
+        <img src="figures/Figure4.png" alt="Figure 4: The ANN-brain discrepancy is robust across analysis choices" class="fig-img" style="height:auto" />
+        <p class="fig-caption">
+          <strong>Figure 4.</strong> The ANN-brain discrepancy is robust across analysis choices.
+          (a) Two independent functional localizers. (b) Venn diagrams showing low overlap between
+          units identified by each localizer.
+          (c) Human-human similarity consistently exceeds human-ANN similarity across both localizers,
+          regions, and measures. (d-e) Higher t-thresholds identify progressively fewer but more
+          selective voxels/units. (f) The human-human minus human-ANN gap remains stable across
+          the full range of selectivity thresholds, for both univariate and multivariate comparisons.
+        </p>
+      </div>
 
       <!-- Interactive A: boxplot -->
-      <div class="interactive-box">
-        <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
-        <div class="interactive-label">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="6" height="7" rx="1"/><path d="M8 10v3M5 6H3M11 6h2"/></svg>
-          Similarity boxplot
-        </div>
-        <div class="controls">
-          <div class="ctrl-group">
-            <label for="f3-froi">fROI</label>
-            <select id="f3-froi" onchange="drawFig3Box()">
-              <option>FFA</option><option>EBA</option><option>PPA</option>
-            </select>
+      <div id="f23-demo1" class="reveal-panel" style="display:none">
+        <div class="interactive-box">
+          <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
+          <div class="interactive-label">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="6" height="7" rx="1"/><path d="M8 10v3M5 6H3M11 6h2"/></svg>
+            Similarity boxplot
           </div>
-          <div class="ctrl-group">
-            <label for="f3-metric">Metric</label>
-            <select id="f3-metric" onchange="drawFig3Box()">
-              <option>Univariate</option><option>Multivariate</option>
-            </select>
+          <div class="controls">
+            <div class="ctrl-group">
+              <label for="f3-froi">fROI</label>
+              <select id="f3-froi" onchange="drawFig3Box()">
+                <option>FFA</option><option>EBA</option><option>PPA</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f3-metric">Metric</label>
+              <select id="f3-metric" onchange="drawFig3Box()">
+                <option>Univariate</option><option>Multivariate</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f3-loc">Localizer</label>
+              <select id="f3-loc" onchange="drawFig3Box()">
+                <option>Localizer 1 (Stigliani et al.)</option>
+                <option>Localizer 2 (Pitcher et al.)</option>
+              </select>
+            </div>
           </div>
-          <div class="ctrl-group">
-            <label for="f3-loc">Localizer</label>
-            <select id="f3-loc" onchange="drawFig3Box()">
-              <option>Localizer 1 (Stigliani et al.)</option>
-              <option>Localizer 2 (Pitcher et al.)</option>
-            </select>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div> Human-Human</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div> Human-ANN</div>
           </div>
-        </div>
-        <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div> Human-Human</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div> Human-ANN</div>
-        </div>
-        <div class="plot-wrap" style="height:210px;position:relative">
-          <canvas id="f3box-canvas"></canvas>
-          <div class="plot-tooltip" id="f3box-tip"></div>
+          <div class="plot-wrap" style="height:210px;position:relative">
+            <canvas id="f3box-canvas"></canvas>
+            <div class="plot-tooltip" id="f3box-tip"></div>
+          </div>
         </div>
       </div>
 
       <!-- Interactive B: RDM -->
-      <div class="interactive-box">
-        <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
-        <div class="interactive-label">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-          Representational dissimilarity matrix (RDM)
-        </div>
-        <div class="controls">
-          <div class="ctrl-group">
-            <label for="rdm-metric">Metric</label>
-            <select id="rdm-metric" onchange="drawRDM()">
-              <option>Univariate</option><option>Multivariate</option>
-            </select>
+      <div id="f23-demo2" class="reveal-panel" style="display:none">
+        <div class="interactive-box">
+          <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
+          <div class="interactive-label">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+            Representational dissimilarity matrix (RDM)
           </div>
+          <div class="controls">
+            <div class="ctrl-group">
+              <label for="rdm-metric">Metric</label>
+              <select id="rdm-metric" onchange="drawRDM()">
+                <option>Univariate</option><option>Multivariate</option>
+              </select>
+            </div>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div> Brain (S1-S8)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div> ANN models (CNNs · ViTs)</div>
+          </div>
+          <p class="interactive-hint">Hover cells to see pair name and correlation value.</p>
+          <div class="rdm-scroll">
+            <div id="rdm-container"></div>
+          </div>
+          <div class="rdm-hover-info" id="rdm-info"></div>
         </div>
-        <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#D85A30"></div> Brain (S1-S8)</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#378ADD"></div> ANN models (CNNs · ViTs)</div>
-        </div>
-        <p class="interactive-hint">Hover cells to see pair name and correlation value.</p>
-        <div class="rdm-scroll">
-          <div id="rdm-container"></div>
-        </div>
-        <div class="rdm-hover-info" id="rdm-info"></div>
       </div>
     </section>
 
@@ -320,8 +419,8 @@
          § FINDING 4
          =================================================== -->
     <section class="section" id="finding4">
-      <div class="section-eyebrow">Finding 4</div>
-      <h2 class="section-title">Category-selective ANN units are neither <em>necessary</em> nor <em>sufficient</em> for predicting brain responses</h2>
+      <!-- <div class="section-eyebrow">Finding 4</div> -->
+      <h2 class="section-title"><b>Finding 4:</b> Category-selective ANN units are neither <em>necessary</em> nor <em>sufficient</em> for predicting brain responses</h2>
       <p class="section-text">
         Voxel-wise encoding models trained on all units in a layer predict brain responses at 
         within-subject ceiling. Removing category-selective units causes no meaningful drop in 
@@ -330,44 +429,54 @@
         the units a functional localizer deems category-selective.
       </p>
 
+      <div class="reveal-tabs">
+        <button class="reveal-btn" onclick="showTab(this, 'f4-fig')">📄 Evidence: Figure 5</button>
+        <span style="align-self:center;color:var(--neutral-light);font-size:16px">·</span>
+        <button class="reveal-btn" onclick="showTab(this, 'f4-demo')">🔬 Interact: Explore performance for an fROI</button>
+      </div>
+
       <!-- Figure 5 -->
-      <img src="figures/Figure5.png" alt="Figure 5: Encoding model lesion results" class="fig-img" style="height:auto" />
-      <p class="fig-caption">
-        <strong>Figure 5.</strong> (a) Schematic of the necessity and sufficiency tests.
-        (b-c) Univariate and multivariate prediction accuracy for encoding models trained on all units, lesioned category-selective units, and using only
-        category-selective units, for FFA, EBA, and PPA.
-      </p>
+      <div id="f4-fig" class="reveal-panel" style="display:none">
+        <img src="figures/Figure5.png" alt="Figure 5: Category-selective units do not drive brain response predictions" class="fig-img" style="height:auto" />
+        <p class="fig-caption">
+          <strong>Figure 5.</strong> Category-selective units do not drive brain response predictions (a) Schematic of the necessity and sufficiency tests.
+          (b-c) Univariate and multivariate prediction accuracy for encoding models trained on all units, lesioned category-selective units, and using only
+          category-selective units, for FFA, EBA, and PPA.
+        </p>
+      </div>
 
       <!-- Interactive: encoding model explorer -->
-      <div class="interactive-box">
-        <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
-        <div class="interactive-label">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="4" r="2"/><circle cx="3" cy="12" r="2"/><circle cx="13" cy="12" r="2"/><path d="M8 6v2M6.3 10.3L4 10.7M9.7 10.3L12 10.7"/></svg>
-          Encoding model explorer &nbsp;·&nbsp; hover a point to track it across conditions
-        </div>
-        <div class="controls">
-          <div class="ctrl-group">
-            <label for="f5-froi">fROI</label>
-            <select id="f5-froi" onchange="drawFig5()">
-              <option>FFA</option><option>EBA</option><option>PPA</option>
-            </select>
+      <div id="f4-demo" class="reveal-panel" style="display:none">
+        <div class="interactive-box">
+          <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
+          <div class="interactive-label">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="4" r="2"/><circle cx="3" cy="12" r="2"/><circle cx="13" cy="12" r="2"/><path d="M8 6v2M6.3 10.3L4 10.7M9.7 10.3L12 10.7"/></svg>
+            Encoding model explorer &nbsp;·&nbsp; hover a point to track it across conditions
           </div>
-          <div class="ctrl-group">
-            <label for="f5-metric">Metric</label>
-            <select id="f5-metric" onchange="drawFig5()">
-              <option>Univariate</option><option>Multivariate</option>
-            </select>
+          <div class="controls">
+            <div class="ctrl-group">
+              <label for="f5-froi">fROI</label>
+              <select id="f5-froi" onchange="drawFig5()">
+                <option>FFA</option><option>EBA</option><option>PPA</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f5-metric">Metric</label>
+              <select id="f5-metric" onchange="drawFig5()">
+                <option>Univariate</option><option>Multivariate</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f5-map">Mapping</label>
+              <select id="f5-map" onchange="drawFig5()">
+                <option>Ridge</option><option>Sparse-positive</option>
+              </select>
+            </div>
           </div>
-          <div class="ctrl-group">
-            <label for="f5-map">Mapping</label>
-            <select id="f5-map" onchange="drawFig5()">
-              <option>Ridge</option><option>Sparse-positive</option>
-            </select>
+          <div class="plot-wrap" style="height:230px;position:relative">
+            <canvas id="f5-canvas"></canvas>
+            <div class="plot-tooltip" id="f5-tip"></div>
           </div>
-        </div>
-        <div class="plot-wrap" style="height:230px;position:relative">
-          <canvas id="f5-canvas"></canvas>
-          <div class="plot-tooltip" id="f5-tip"></div>
         </div>
       </div>
     </section>
@@ -376,8 +485,8 @@
          § FINDING 5
          =================================================== -->
     <section class="section" id="finding5">
-      <div class="section-eyebrow">Finding 5</div>
-      <h2 class="section-title">The divergences are human-interpretable, not just statistical</h2>
+      <!-- <div class="section-eyebrow">Finding 5</div> -->
+      <h2 class="section-title"><b>Finding 5:</b> The differences between category selectivity in ANNs and brains are systematic and interpretable</h2>
       <p class="section-text">
         The divergences between ANN unit responses and human category-selective regions are not
         arbitrary — they reflect simple, interpretable stimulus-level features. These candidate
@@ -391,7 +500,7 @@
           <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.4rem">
             <span style="font-size:11px;color:var(--brain-red);font-weight:500;white-space:nowrap">FFA:</span>
             <span style="flex:1;font-size:12px;background:var(--brain-red-bg);border-radius:6px;padding:5px 8px;text-align:center">Human faces</span>
-            <span style="font-size:14px;color:var(--brain-red);font-weight:500">=</span>
+            <span style="font-size:14px;color:var(--brain-red);font-weight:500">≈</span>
             <span style="flex:1;font-size:12px;background:var(--brain-red-bg);border-radius:6px;padding:5px 8px;text-align:center">Animal faces</span>
           </div>
           <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.9rem">
@@ -439,73 +548,83 @@
 
       </div>
 
+      <div class="reveal-tabs">
+        <button class="reveal-btn" onclick="showTab(this, 'f5-fig')">📄 Evidence: Figure 6</button>
+        <span style="align-self:center;color:var(--neutral-light);font-size:16px">·</span>
+        <button class="reveal-btn" onclick="showTab(this, 'f5-demo')">🔬 Interact: Interpret ANN and brain response divergence</button>
+      </div>
+      
       <!-- Figure 6 -->
-      <img src="figures/Figure6.png" alt="Figure 6: Stimulus-driven divergences" class="fig-img" style="height:auto" />
-      <p class="fig-caption">
-        <strong>Figure 6.</strong> (a) Hypothesis generation: scatter of ANN vs. brain z-scored
-        responses per image — outlier stimuli reveal interpretable groupings.
-        (b) Generalization to held-out models, subjects, and stimuli.
-      </p>
-
-      <!-- Interactive: scatter with image hover -->
-      <div class="interactive-box">
-        <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
-        <div class="interactive-label">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="4" cy="12" r="1.5"/><circle cx="8" cy="7" r="1.5"/><circle cx="12" cy="4" r="1.5"/><circle cx="5" cy="5" r="1.5"/><circle cx="11" cy="11" r="1.5"/></svg>
-          Stimulus divergence scatter &nbsp;·&nbsp; hover points to see images
-        </div>
-        <div class="controls">
-          <div class="ctrl-group">
-            <label for="f6-domain">Domain</label>
-            <select id="f6-domain" onchange="updateF6Groups(); drawFig6()">
-              <option value="face">Face (FFA)</option>
-              <option value="body">Body (EBA)</option>
-              <option value="scene">Scene (PPA)</option>
-            </select>
-          </div>
-          <div class="ctrl-group">
-            <label for="f6-group">Comparison</label>
-            <select id="f6-group" onchange="drawFig6()">
-              <option>Animal vs. human faces</option>
-            </select>
-          </div>
-          <div class="ctrl-group">
-            <label for="f6-subj">Subject</label>
-            <select id="f6-subj" onchange="drawFig6()">
-              <option>Subject 1</option><option>Subject 2</option>
-              <option>Subject 3</option><option>Subject 4</option>
-              <option>Subject 5</option><option>Subject 6</option>
-              <option>Subject 7</option><option>Subject 8</option>
-              <option>Mean (S1-S8)</option>
-            </select>
-          </div>
-        </div>
-        <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#E24B4A"></div> Large ANN-brain discrepancy</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#B4B2A9"></div> Other stimuli</div>
-        </div>
-        <div class="plot-wrap" style="height:230px;position:relative">
-          <canvas id="f6-canvas"></canvas>
-          <div class="plot-tooltip" id="f6-tip"></div>
-        </div>
-        <p class="interactive-hint" style="margin-top:.5rem">
-          In the live site, hovering a point loads its NSD image from
-          <code>images/nsd/{image_id}.jpg</code>.
+      <div id="f5-fig" class="reveal-panel" style="display:none">
+        <img src="figures/Figure6.png" alt="Figure 6: Stimulus-driven divergences are systematic and interpretable" class="fig-img" style="height:auto" />
+        <p class="fig-caption">
+          <strong>Figure 6.</strong>  Stimulus-driven divergences are systematic and interpretable (a) Hypothesis generation: scatter of ANN vs. brain z-scored
+          responses per image — outlier stimuli reveal interpretable groupings.
+          (b) Generalization to held-out models, subjects, and stimuli.
         </p>
       </div>
-    </section>
+
+      <!-- Interactive: scatter with image hover -->
+      <div id="f5-demo" class="reveal-panel" style="display:none">
+        <div class="interactive-box">
+          <button class="expand-btn" onclick="toggleExpand(this.closest('.interactive-box'))">⤢ Expand</button>
+          <div class="interactive-label">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="4" cy="12" r="1.5"/><circle cx="8" cy="7" r="1.5"/><circle cx="12" cy="4" r="1.5"/><circle cx="5" cy="5" r="1.5"/><circle cx="11" cy="11" r="1.5"/></svg>
+            Stimulus divergence scatter &nbsp;·&nbsp; hover points to see images
+          </div>
+          <div class="controls">
+            <div class="ctrl-group">
+              <label for="f6-domain">Domain</label>
+              <select id="f6-domain" onchange="updateF6Groups(); drawFig6()">
+                <option value="face">Face (FFA)</option>
+                <option value="body">Body (EBA)</option>
+                <option value="scene">Scene (PPA)</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f6-group">Comparison</label>
+              <select id="f6-group" onchange="drawFig6()">
+                <option>Animal vs. human faces</option>
+              </select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f6-subj">Subject</label>
+              <select id="f6-subj" onchange="drawFig6()">
+                <option>Subject 1</option><option>Subject 2</option>
+                <option>Subject 3</option><option>Subject 4</option>
+                <option>Subject 5</option><option>Subject 6</option>
+                <option>Subject 7</option><option>Subject 8</option>
+                <option>Mean (S1-S8)</option>
+              </select>
+            </div>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#E24B4A"></div> Large ANN-brain discrepancy</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#B4B2A9"></div> Other stimuli</div>
+          </div>
+          <div class="plot-wrap" style="height:230px;position:relative">
+            <canvas id="f6-canvas"></canvas>
+            <div class="plot-tooltip" id="f6-tip"></div>
+          </div>
+          <p class="interactive-hint" style="margin-top:.5rem">
+            In the live site, hovering a point loads its NSD image from
+            <code>images/nsd/{image_id}.jpg</code>.
+          </p>
+        </div>
+      </div>
+      </section>
+
+    <!-- Divider line -->
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:1rem 0">
 
     <!-- ===================================================
          § CONCLUSION
          =================================================== -->
     <section class="section" id="conclusion">
-      <div class="section-eyebrow">Conclusion</div>
-      <h2 class="section-title">Current ANNs do not converge on the <em>form</em> of category selectivity observed in the human brain</h2>
+      <!-- <div class="section-eyebrow">Conclusion</div> -->
+      <h2 class="section-title"><b>Conclusion:</b> Current ANNs do not converge on the <em>form</em> of category selectivity observed in the human brain</h2>
       <p class="section-text">
-        In this work, we draw the distinction between the <em>existence</em> of category selectivity
-        in modern ANNs and the <em>form</em> of category selectivity they exhibit compared to the
-        human brain. Even though current ANN models contain units that can be deemed category-selective,
-        their response profiles are highly variable across models and not brain-like &nbsp;·&nbsp <br>
+        A category preference alone can arise from many different response patterns. The presence of face-selective units in an ANN is not evidence that it computes face representations the way the brain does. &nbsp;·&nbsp <br>
         Category selectivity is a more demanding — and more informative — test of brain-model alignment than previously appreciated.
         Comparing the full structure of category-selective responses, not just category preference, reveals systematic and interpretable failures in current ANN models.
       </p>
@@ -520,6 +639,13 @@
         </div>
       </div>
     </section>
+
+    
+
+Category selectivity is a more demanding — and more informative — test of brain-model alignment than previously appreciated. Comparing the full structure of category-selective responses, not just category preference, reveals systematic and interpretable failures in current ANN models.
+
+    <!-- Divider line -->
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:1rem 0">
 
     <!-- ===================================================
          § CITATION

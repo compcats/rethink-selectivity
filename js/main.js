@@ -226,6 +226,7 @@ window.addEventListener('resize', () => {
   }, 120);
 });
 
+/* ---- Copy BibTex ---- */
 function copyBibtex() {
   const text = document.querySelector('.bib-block').textContent;
   navigator.clipboard.writeText(text).then(() => {
@@ -233,4 +234,20 @@ function copyBibtex() {
     btn.textContent = 'Copied ✓';
     setTimeout(() => btn.textContent = 'Copy BibTeX', 2000);
   });
+}
+
+/* ---- Reveal figure tabs ---- */
+function showTab(btn, panelId) {
+  const tabs = btn.closest('.reveal-tabs');
+  const panel = document.getElementById(panelId);
+  const isActive = btn.classList.contains('active');
+
+  tabs.querySelectorAll('.reveal-btn').forEach(b => b.classList.remove('active'));
+  tabs.parentElement.querySelectorAll('.reveal-panel').forEach(p => p.style.display = 'none');
+
+  if (!isActive) {
+    btn.classList.add('active');
+    panel.style.display = 'block';
+    if (typeof window.redrawAllPlots === 'function') window.redrawAllPlots();
+  }
 }
