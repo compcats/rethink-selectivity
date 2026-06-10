@@ -622,12 +622,29 @@
          =================================================== -->
     <section class="section" id="conclusion">
       <!-- <div class="section-eyebrow">Conclusion</div> -->
-      <h2 class="section-title"><b>Conclusion:</b> Current ANNs do not converge on the <em>form</em> of category selectivity observed in the human brain</h2>
-      <p class="section-text">
-        A category preference alone can arise from many different response patterns. The presence of face-selective units in an ANN is not evidence that it computes face representations the way the brain does. &nbsp;·&nbsp <br>
-        Category selectivity is a more demanding — and more informative — test of brain-model alignment than previously appreciated.
-        Comparing the full structure of category-selective responses, not just category preference, reveals systematic and interpretable failures in current ANN models.
-      </p>
+      <h2 class="section-title">Current ANNs do not exhibit the <em>form</em> of category selectivity observed in the human brain</h2>
+      <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-bottom:.75rem">
+        <p class="section-text" style="margin:0">A category preference alone can arise from many different response patterns. The <em>existence</em> of category-selective units in ANNs does not imply that they exhibit the same <em>form</em> of category selectivity as the human brain.</p>
+      </div>
+      <div style="background:var(--bg-subtle);border-left:3px solid var(--brain-red);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-bottom:1.25rem">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--brain-red);font-weight:500;margin-bottom:.6rem">Recommendations</div>
+        <ul class="section-text" style="padding-left:1.2rem;margin:0">
+          <li>Use the same localizer procedure as human neuroimaging and verify that selectivity generalizes to an independent stimulus set</li>
+          <li>Go beyond category preference — compare full stimulus-level response profiles across hundreds of natural images</li>
+          <li>Confirm that conclusions are stable across multiple localizer choices</li>
+        </ul>
+      </div>
+
+      <div style="background:var(--bg-surface);border:0.5px solid var(--border-strong);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-bottom:.75rem">
+        <p class="section-text" style="margin:0">ANN category-selective units differ from category-selective voxels in systematic and interpretable ways. Current ANN models do not yet share the biological invariances present in human category-selective cortex. Hence, ANN category-selective units cannot yet be equated with human category-selective voxels.</p>
+      </div>
+      <div style="background:var(--bg-subtle);border-left:3px solid var(--brain-red);border-radius:var(--radius-md);padding:.9rem 1.1rem;margin-bottom:1.25rem">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--brain-red);font-weight:500;margin-bottom:.6rem">Recommendations</div>
+        <ul class="section-text" style="padding-left:1.2rem;margin:0">
+          <li>Use voxel-wise encoding models rather than direct unit comparisons; relevant features are distributed across the layer, not concentrated in selective units</li>
+          <li>Use our interpretable diagnostic tests (human vs. animal faces; visible vs. obscured limbs; scenes with vs. without people) as a useful starting point for evaluating brain-like selectivity</li>
+        </ul>
+      </div>
       <div class="open-questions">
         <div class="oq-card brain">
           <div class="oq-label">Open question 1</div>
@@ -639,10 +656,6 @@
         </div>
       </div>
     </section>
-
-    
-
-Category selectivity is a more demanding — and more informative — test of brain-model alignment than previously appreciated. Comparing the full structure of category-selective responses, not just category preference, reveals systematic and interpretable failures in current ANN models.
 
     <!-- Divider line -->
     <hr style="border:none;border-top:0.5px solid var(--border);margin:1rem 0">
