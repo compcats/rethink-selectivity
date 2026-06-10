@@ -264,32 +264,43 @@
           </div>
           <div class="controls">
             <div class="ctrl-group">
-              <label for="f2-domain">Selectivity</label>
-              <select id="f2-domain" onchange="drawFig2()">
+              <label for="f1-domain">Selectivity</label>
+              <select id="f1-domain" onchange="updateF1demoLayer(); drawF1demo()">
                 <option value="face">Face-selective</option>
                 <option value="body">Body-selective</option>
                 <option value="scene">Scene-selective</option>
               </select>
             </div>
             <div class="ctrl-group">
-              <label for="f2-model">Model</label>
-              <select id="f2-model" onchange="drawFig2()">
-                <option value="resnet50">ResNet-50 ImageNet-1K</option>
-                <option value="vitb16">ViT-B/16 SigLIP2</option>
-                <option value="alexnet">AlexNet ImageNet-1K</option>
-                <option value="untrained">Untrained AlexNet (seed 5)</option>
+              <label for="f1-model">Model</label>
+              <select id="f1-model" onchange="updateF1demoLayer(); drawF1demo()"></select>
+            </div>
+              <div class="ctrl-group">
+              <label for="f1-layer">Layer</label>
+              <select id="f1-layer" onchange="drawF1demo()"></select>
+            </div>
+            <div class="ctrl-group">
+              <label for="f1-localizer">Localizer</label>
+              <select id="f1-localizer" onchange="updateF1demoLayer(); updateF1demoThresh(); drawF1demo()">
+                <optgroup label="Category contrast">
+                  <option value="grillspector">Stigliani et al., 2015 (L1)</option>
+                  <option value="kanwisher">Pitcher et al., 2011 (L2)</option>
+                </optgroup>
+                <optgroup label="Brain-aligned">
+                  <option value="nsd">Voxel-tuning matched</option>
+                </optgroup>
               </select>
             </div>
             <div class="ctrl-group">
-              <label for="f2-thresh">t-threshold: <strong id="f2-thresh-val">7</strong></label>
-              <input type="range" id="f2-thresh" min="3" max="11" step="2" value="7"
-                    oninput="document.getElementById('f2-thresh-val').textContent=this.value; drawFig2()" />
+              <label for="f1-thresh">t-threshold: <strong id="f1-thresh-val">7</strong></label>
+              <input type="range" id="f1-thresh" min="3" max="11" step="2" value="7"
+                    oninput="document.getElementById('f1-thresh-val').textContent=this.value; drawF1demo()" />
             </div>
           </div>
-          <div class="plot-info" id="f2-info">N = 729 face-selective units (0.18% of layer)</div>
+          <div class="plot-info" id="f1-info">N = 729 face-selective units (0.18% of layer)</div>
           <div class="plot-wrap" style="height:210px;position:relative">
-            <canvas id="f2-canvas"></canvas>
-            <div class="plot-tooltip" id="f2-tip"></div>
+            <canvas id="f1-canvas"></canvas>
+            <div class="plot-tooltip" id="f1-tip"></div>
           </div>
           <p class="interactive-hint" style="margin-top:.5rem">
             Hover scatter points to see the localizer image that drives each unit.
@@ -707,6 +718,7 @@
 <!-- ============================================================
      SCRIPTS
      ============================================================ -->
+<script src="js/constants.js"></script>
 <script src="js/main.js"></script>
 <script>
 /* ============================================================
@@ -714,6 +726,54 @@
    Replace each draw* function body with real data loaded via
    fetch('data/figN_xxx.json').then(...) in the live site.
    ============================================================ */
+
+// Populate f1 model dropdown from ORDERED_MODELS
+(function populateF1demoModels() {
+  const sel = document.getElementById('f1-model');
+  const trainedGroup = document.createElement('optgroup');
+  trainedGroup.label = 'Trained models';
+  const untrainedGroup = document.createElement('optgroup');
+  untrainedGroup.label = 'Untrained models';
+
+  Object.entries(ORDERED_MODELS).forEach(([key, label]) => {
+    const opt = document.createElement('option');
+    opt.value = key;
+    opt.textContent = label;
+    UNTRAINED_MODELS.has(key)
+      ? untrainedGroup.appendChild(opt)
+      : trainedGroup.appendChild(opt);
+  });
+
+  sel.appendChild(trainedGroup);
+  sel.appendChild(untrainedGroup);
+  updateF1demoLayer();
+  updateF1demoThresh();
+})();
+
+function updateF1demoLayer() {
+  const model  = document.getElementById('f1-model').value;
+  const domain = document.getElementById('f1-domain').value;
+  const sel    = document.getElementById('f1-layer');
+  sel.innerHTML = '';
+  const layer  = MODEL_LAYERS[model]?.[domain] || 'representative layer';
+  const opt    = document.createElement('option');
+  opt.value       = layer;
+  opt.textContent = layer;
+  sel.appendChild(opt);
+}
+
+function updateF1demoThresh() {
+  const localizer = document.getElementById('f1-localizer').value;
+  const slider    = document.getElementById('f1-thresh');
+  const label     = document.getElementById('f1-thresh-val');
+  if (localizer === 'nsd') {
+    slider.value    = 7;
+    slider.disabled = true;
+    label.textContent = '7';
+  } else {
+    slider.disabled = false;
+  }
+}
 
 const RED  = '#D85A30';
 const BLUE = '#378ADD';
@@ -835,7 +895,7 @@ document.getElementById('blob-canvas').addEventListener('click', e => {
 });
 
 /* ---- Figure 2: unit response boxplot ---- */
-// TODO: replace with fetch('data/fig2_responses.json').then(d => { fig2Data=d; drawFig2(); })
+// TODO: replace with fetch('data/fig2_responses.json').then(d => { fig2Data=d; drawF1demo(); })
 const fig2Data = {
   face: {
     resnet50:  { pctBase: 0.18, nBase: 729,  means: [ 2.8, -0.4, -0.3, -0.2], iqr: [[ 2.0,3.5],[-0.7,0.1],[-0.6,0.1],[-0.4,0.1]] },
@@ -859,53 +919,153 @@ const fig2Data = {
 
 const threshScale = { 3: 1.8, 5: 1.4, 7: 1.0, 9: 0.65, 11: 0.4 };
 
-function drawFig2() {
-  const domain = document.getElementById('f2-domain').value;
-  const model  = document.getElementById('f2-model').value;
-  const thresh = parseInt(document.getElementById('f2-thresh').value);
-  const d      = fig2Data[domain][model];
-  const scale  = threshScale[thresh] || 1.0;
-  const n      = model === 'untrained' ? 0 : Math.round(d.nBase * scale);
-  const pct    = model === 'untrained' ? '0.00' : (d.pctBase * scale).toFixed(2);
-  document.getElementById('f2-info').textContent =
+function drawF1demo() {
+  const domain  = document.getElementById('f1-domain').value;
+  const model   = document.getElementById('f1-model').value;
+  const thresh  = parseInt(document.getElementById('f1-thresh').value);
+  const scale   = threshScale[thresh] || 1.0;
+  const d = fig2Data[domain][model] || fig2Data[domain]['resnet50imagenet1kv2'];
+  if (!d) return;
+  const n   = UNTRAINED_MODELS.has(model) ? 0 : Math.round(d.nBase * scale);
+  const pct = UNTRAINED_MODELS.has(model) ? '0.00' : (d.pctBase * scale).toFixed(2);
+  document.getElementById('f1-info').textContent =
     `N = ${n} ${domain}-selective units (${pct}% of layer)`;
 
-  const canvas = document.getElementById('f2-canvas');
-  const w = canvasWidth(canvas), h = 210;
-  const ctx = setupCanvas(canvas, w, h);
-  ctx.clearRect(0, 0, w, h);
+  const canvas  = document.getElementById('f1-canvas');
+  const W = canvasWidth(canvas), H = 220;
+  const ctx = setupCanvas(canvas, W, H);
+  ctx.clearRect(0, 0, W, H);
 
-  const labels = ['Faces', 'Bodies', 'Scenes', 'Objects'];
-  const domainCols = {
-    face:  [RED,  GRAY, GRAY, GRAY],
-    body:  [GRAY, RED,  GRAY, GRAY],
-    scene: [GRAY, GRAY, RED,  GRAY],
-  };
-  const cols = domainCols[domain];
-  const ymin = -1.5, ymax = 4.2;
-  const pad = 38, bw = (w - pad - 12) / 4;
-  const toY = v => h - 24 - (v - ymin) / (ymax - ymin) * (h - 40);
+  const PAD_L = 12, PAD_R = 28, PAD_T = 24, PAD_B = 24;
+  const plotW = W - PAD_L - PAD_R;
+  const plotH = H - PAD_T - PAD_B;
 
-  drawDashedLine(ctx, toY(0), pad, w - 6, 'rgba(0,0,0,0.15)', '');
-  drawAxisLabel(ctx, 'z-scored response', 4, 10, { align: 'left', size: 10 });
+  // y range matches paper froi ranges
+  const yRanges = { face: [-2.25, 4], body: [-2.75, 6], scene: [-2.75, 5] };
+  const [yMin, yMax] = yRanges[domain];
+  const toY = v => PAD_T + plotH - (v - yMin) / (yMax - yMin) * plotH;
+  const zeroY = toY(0);
 
-  labels.forEach((lbl, i) => {
-    const cx = pad + i * bw + bw / 2;
-    const sc = model === 'untrained' ? 0.3 : scale;
+  // --- dashed zero line ---
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+  ctx.lineWidth = 0.6;
+  ctx.setLineDash([6, 4]);
+  ctx.beginPath();
+  ctx.moveTo(PAD_L, zeroY);
+  ctx.lineTo(W - PAD_R, zeroY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  const N_CATS = 4;
+  const slotW  = plotW / N_CATS;
+  const BOX_W  = slotW * 0.38;
+  const pref   = PREF_IDX[domain];
+  const sc = UNTRAINED_MODELS.has(model) ? 0.25 : scale;
+
+  CAT_LABELS.forEach((lbl, i) => {
+    const cx  = PAD_L + i * slotW + slotW / 2;
+    const col = CAT_COLORS[domain][i];
     const mean = d.means[i] * sc;
     const q1   = d.iqr[i][0] * sc;
     const q3   = d.iqr[i][1] * sc;
+    const wLo  = q1 - 0.18 * Math.abs(sc);
+    const wHi  = q3 + 0.12 * Math.abs(sc);
 
-    drawBox(ctx, cx, q1, q3, mean, q1 - 0.15, q3 + 0.1, toY, bw * 0.55, cols[i]);
+    // gray shading behind preferred category
+    if (i === pref) {
+      const shadY1 = toY(Math.max(mean, 0));
+      const shadY2 = toY(Math.min(mean, 0));
+      ctx.fillStyle = SHADE_COLOR;
+      ctx.fillRect(cx - BOX_W / 2, shadY1, BOX_W, shadY2 - shadY1);
+    }
 
-    // jitter points (synthetic)
-    const jPoints = Array.from({ length: 10 }, () =>
-      mean + (Math.random() - 0.5) * (q3 - q1) * 1.2
+    // whiskers
+    ctx.strokeStyle = 'rgba(0,0,0,0.75)';
+    ctx.lineWidth = 0.85;
+    ctx.beginPath();
+    ctx.moveTo(cx, toY(wLo)); ctx.lineTo(cx, toY(q1));
+    ctx.moveTo(cx, toY(q3));  ctx.lineTo(cx, toY(wHi));
+    // caps
+    ctx.moveTo(cx - BOX_W * 0.2, toY(wLo)); ctx.lineTo(cx + BOX_W * 0.2, toY(wLo));
+    ctx.moveTo(cx - BOX_W * 0.2, toY(wHi)); ctx.lineTo(cx + BOX_W * 0.2, toY(wHi));
+    ctx.stroke();
+
+    // IQR box
+    ctx.fillStyle   = col;
+    ctx.strokeStyle = 'rgba(0,0,0,0.75)';
+    ctx.lineWidth   = 0.55;
+    ctx.fillRect(cx - BOX_W / 2, toY(q3), BOX_W, toY(q1) - toY(q3));
+    ctx.strokeRect(cx - BOX_W / 2, toY(q3), BOX_W, toY(q1) - toY(q3));
+
+    // median line — wider than box
+    const medY = toY(mean);
+    ctx.strokeStyle = 'rgba(0,0,0,0.9)';
+    ctx.lineWidth   = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(cx - BOX_W * 0.7, medY);
+    ctx.lineTo(cx + BOX_W * 0.7, medY);
+    ctx.stroke();
+
+    // scatter jitter
+    const rand = seededRand(i * 1000 + Math.floor(thresh));
+    const jPts = Array.from({ length: 12 }, () =>
+      mean + (rand() - 0.5) * (q3 - q1) * 1.6
     );
-    drawJitter(ctx, jPoints, cx, bw * 0.5, toY, cols[i]);
+    jPts.forEach(v => {
+      const jx = cx + (Math.random() - 0.5) * BOX_W * 0.55;
+      ctx.beginPath();
+      ctx.arc(jx, toY(v), 1.8, 0, 2 * Math.PI);
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.fill();
+    });
 
-    drawAxisLabel(ctx, lbl, cx, h - 6, { size: 11 });
+    // x label
+    ctx.fillStyle   = 'rgba(0,0,0,0.6)';
+    ctx.font        = '11px -apple-system, sans-serif';
+    ctx.textAlign   = 'center';
+    ctx.fillText(lbl, cx, H - 6);
   });
+
+  // --- right spine + y-axis ticks ---
+  const yTicks = { face: [-2.25, 0, 4], body: [-2.75, 0, 6], scene: [-2.75, 0, 5] }[domain];
+  const spineX = W - PAD_R + 4;
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+  ctx.lineWidth   = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(spineX, toY(yTicks[0]));
+  ctx.lineTo(spineX, toY(yTicks[yTicks.length - 1]));
+  ctx.stroke();
+
+  yTicks.forEach(v => {
+    const ty = toY(v);
+    ctx.beginPath();
+    ctx.moveTo(spineX, ty);
+    ctx.lineTo(spineX + 3, ty);
+    ctx.stroke();
+    ctx.fillStyle   = 'rgba(0,0,0,0.5)';
+    ctx.font        = '9px -apple-system, sans-serif';
+    ctx.textAlign   = 'left';
+    ctx.fillText(Number.isInteger(v) ? v : v.toFixed(2), spineX + 5, ty + 3);
+  });
+
+  // --- N units annotation ---
+  ctx.fillStyle  = 'rgba(0,0,0,0.45)';
+  ctx.font       = 'italic 10px -apple-system, sans-serif';
+  ctx.textAlign  = 'right';
+  ctx.fillText(`N=${n} units`, W - PAD_R - 2, PAD_T + 10);
+
+  // --- y-axis label ---
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.font      = '10px -apple-system, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.translate(W - 6, H / 2);
+  ctx.rotate(Math.PI / 2);
+  ctx.fillText('mean response, z-scored', 0, 0);
+  ctx.restore();
 }
 
 /* ---- Figure 3: similarity boxplot ---- */
@@ -1224,13 +1384,13 @@ function drawFig6() {
 
 /* ---- Register global redraw for resize ---- */
 window.redrawAllPlots = () => {
-  drawBlob(); drawFig2(); drawFig3Box(); drawRDM();
+  drawBlob(); drawF1demo(); drawFig3Box(); drawRDM();
   drawFig5(); drawFig6();
 };
 
 /* ---- Initial render ---- */
 window.addEventListener('DOMContentLoaded', () => {
-  drawBlob(); drawFig2(); drawFig3Box(); drawRDM();
+  drawBlob(); drawF1demo(); drawFig3Box(); drawRDM();
   drawFig5(); drawFig6();
 });
 

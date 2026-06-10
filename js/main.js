@@ -84,6 +84,15 @@ function setupCanvas(canvas, w, h) {
   return ctx;
 }
 
+// Seeded random — same sequence every time
+function seededRand(seed) {
+  let s = seed;
+  return function() {
+    s = (s * 16807 + 0) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
 /**
  * Get the current CSS width of a canvas's parent element.
  */
