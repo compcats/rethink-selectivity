@@ -37,26 +37,26 @@ const ORDERED_MODELS = {
   cornetz:                    'CORNet-Z',
   alexnetipclref01:           'AlexNet IPCL',
   // Untrained
-  alexnetrandom1:  'AlexNet 1',
-  alexnetrandom2:  'AlexNet 2',
-  alexnetrandom3:  'AlexNet 3',
-  alexnetrandom4:  'AlexNet 4',
-  alexnetrandom5:  'AlexNet 5',
-  resnet18random1: 'ResNet-18 1',
-  resnet18random2: 'ResNet-18 2',
-  resnet18random3: 'ResNet-18 3',
-  resnet18random4: 'ResNet-18 4',
-  resnet18random5: 'ResNet-18 5',
-  resnet50random1: 'ResNet-50 1',
-  resnet50random2: 'ResNet-50 2',
-  resnet50random3: 'ResNet-50 3',
-  resnet50random4: 'ResNet-50 4',
-  resnet50random5: 'ResNet-50 5',
-  vitb32random1:   'ViT-B/32 1',
-  vitb32random2:   'ViT-B/32 2',
-  vitb32random3:   'ViT-B/32 3',
-  vitb32random4:   'ViT-B/32 4',
-  vitb32random5:   'ViT-B/32 5',
+  alexnetrandom1:  'AlexNet Random 1',
+  alexnetrandom2:  'AlexNet Random 2',
+  alexnetrandom3:  'AlexNet Random 3',
+  alexnetrandom4:  'AlexNet Random 4',
+  alexnetrandom5:  'AlexNet Random 5',
+  resnet18random1: 'ResNet-18 Random 1',
+  resnet18random2: 'ResNet-18 Random 2',
+  resnet18random3: 'ResNet-18 Random 3',
+  resnet18random4: 'ResNet-18 Random 4',
+  resnet18random5: 'ResNet-18 Random 5',
+  resnet50random1: 'ResNet-50 Random 1',
+  resnet50random2: 'ResNet-50 Random 2',
+  resnet50random3: 'ResNet-50 Random 3',
+  resnet50random4: 'ResNet-50 Random 4',
+  resnet50random5: 'ResNet-50 Random 5',
+  vitb32random1:   'ViT-B/32 Random 1',
+  vitb32random2:   'ViT-B/32 Random 2',
+  vitb32random3:   'ViT-B/32 Random 3',
+  vitb32random4:   'ViT-B/32 Random 4',
+  vitb32random5:   'ViT-B/32 Random 5',
 };
 
 const MODEL_LAYERS = {
@@ -134,5 +134,5 @@ const CAT_COLORS = {
   scene: ['#f09678', '#a7d6a1', '#a6d2e5', '#808080'],
 };
 const PREF_IDX = { face: 0, body: 1, scene: 2 };
-const CAT_LABELS = ['F', 'B', 'S', 'O'];
+const CAT_LABELS = ['Faces', 'Bodies', 'Scenes', 'Objects'];
 const SHADE_COLOR = '#E6E6E6';
